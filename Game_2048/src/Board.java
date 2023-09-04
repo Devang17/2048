@@ -1,4 +1,4 @@
-
+import java.util.Random;
 
 public class Board
 {
@@ -22,7 +22,16 @@ public class Board
 				board[i][j] = new Tile(0);			//Sets the tile value to 0 using Tile class constructor1
 			}
 		}
-		board[0][0].value = 0;
+		
+		Random rand = new Random();
+		int x = rand.nextInt(4);
+		int y = rand.nextInt(4);
+		
+		board[0][3].value = 0;
+		board[0][2].value = 2;
+		board[0][1].value = 4;
+		board[0][0].value = 2;
+		
 	}
 	
 	//Method to return the high score
@@ -43,6 +52,33 @@ public class Board
 	{
 		
 	}
+
+	
+	//Find an empty tile and spawn either a 2 or a 4 in the tile
+	public void spawn()
+	{
+		boolean flag = true;
+		Random rand = new Random();
+		while(flag)
+		{
+			int col = rand.nextInt(3);
+			int row = rand.nextInt(3);
+			
+			System.out.println("don2");
+			
+			if(board[row][col].value == 0)
+			{
+				double randomNum = Math.random();
+				
+				int spawnNum = (randomNum > 0.5) ? 2:4;
+				
+				board[row][col].setValue(spawnNum);
+				flag = false;
+			}
+			
+		}
+		
+	}
 	
 
 	//Method called when the up arrow is pressed 
@@ -50,15 +86,14 @@ public class Board
 	//then perform the vertical move.
 	public void up()
 	{
-		int limit = 0; //Sets the border to the 1st row i.e. 0
-		
 		for(int i=0; i<board.length; i++)	//Column 
 		{
+			border = 0; 
 			for(int j=0; j<board.length; j++)	//Row. Check all the rows starting from row1 to row4 moving down each column
 			{
 				if(board[j][i].getValue() != 0)
 				{
-					if(limit < j)
+					if(border <= j)
 					{
 						verticalMove(j,i,"up");
 					}
@@ -67,22 +102,51 @@ public class Board
 		}
 	}
 	
+
+	//Performs vertical move i.e. adding and moving the tiles based upon their tile values
 	public void verticalMove(int row, int col, String direction)
 	{
+		Tile currentTile = board[border][col];
+		Tile nextTile = board[row][col];
 		
+		if(currentTile.value == 0 || currentTile.value == nextTile.value)
+		{
+			//Move Vertically
+			if(row < border && direction == "down"  || row > border) 
+			{
+				int score = currentTile.value += nextTile.value;
+				currentTile.setValue(score);
+				nextTile.setValue(0);	
+			}
+		}
+		else
+		{
+			if(direction == "up")
+			{
+				border++;
+				
+			}
+			
+			else if(direction == "down")
+			{
+				border--;
+			}
+			
+			verticalMove(row, col, direction);
+			
+		}
 	}
 	
-	
+
 	//Method called when the up arrow is pressed 
 	//Test the value inside each row tile of each column 1-4 one by one moving from row 4 to row 1and if the value is not 0, 
 	//then perform the vertical move.
 	public void down()
 	{
-		int limit = grids - 1; 
-		
-		for(int i=0; i<board.length; i++)	//Column
+		for(int i=0; i<grids; i++)	//Column
 		{
-			for(int j=board.length; j>=0; j--)	//Row. Check each row of column starting at row4 and moving towards row1
+		 	border = grids - 1; 
+			for(int j=grids-1; j>=0; j--)	//Row. Check each row of column starting at row4 and moving towards row1
 			{
 				if(board[j][i].getValue()!=0)
 				{
@@ -95,17 +159,21 @@ public class Board
 		}
 	}
 	
+
+	
 	public void left()
 	{
-		int limit = 0;
-		for(int i=0; i<board.length; i++)
+		
+		for(int i=0; i<grids-1; i++)
 		{
-			for(int j=0; j<board.length; j++)
+			border = 0;
+			for(int j=0; j<=grids-1; j++)
 			{
 				if(board[i][j].getValue()!=0)
 				{
-					if(limit <= i)
+					if(border <= j)
 					{
+						System.out.println("column = " + j);
 						horizontalMove(i, j, "left");
 					}
 				}
@@ -117,15 +185,16 @@ public class Board
 	//Method to execute when the user presses right key
 	public void right()
 	{
-		int limit = grids-1;
-		for(int i=0; i<=board.length; i++)	//Row
+		for(int i=0; i<grids; i++)	//Row
 		{
-			for(int j=board.length; j<=0; j--)  //Column
+			border = 3;
+			for(int j=grids-1; j>=0; j--)  //Column
 			{
+				
 				if(board[i][j].getValue()!=0)
-				{
-					if(limit >= i)
-					{
+				{	
+					if(border >= i)
+					{				
 						horizontalMove(i, j, "right");
 					}
 				}
@@ -135,16 +204,43 @@ public class Board
 	
 	public void horizontalMove(int row, int col, String direction)
 	{
-
+		Tile currentTile = board[row][border];
+		Tile nextTile = board[row][col];
+		//System.out.println(border);
+		//System.out.println("column = " + col);
+		if(currentTile.value == 0 || currentTile.value == nextTile.value)
+		{
+			if(col < border || col > border && direction =="left")
+			{	
+				int score = currentTile.value + nextTile.value;
+				currentTile.setValue(score);
+				nextTile.setValue(0); 
+			}
+		}
+		
+		else
+		{
+			if(direction == "right")
+			{
+				border--;
+			}
+			
+			else
+			{
+				border++;
+			}
+			horizontalMove(row, col, direction);
+		}
+		
 	}
 	
 	public String toString()
 	{
 		String s = "";
 		
-		for(int i=0; i<board.length; i++)
+		for(int i=0; i<grids; i++)
 		{
-			for(int j=0; j<board[i].length; j++)
+			for(int j=0; j<grids; j++)
 			{
 				s += board[i][j].value + "\t";
 			}
