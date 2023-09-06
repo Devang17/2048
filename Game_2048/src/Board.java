@@ -27,7 +27,7 @@ public class Board
 		int x = rand.nextInt(4);
 		int y = rand.nextInt(4);
 		
-		board[0][3].value = 0;
+		board[0][3].value = 8;
 		board[0][2].value = 2;
 		board[0][1].value = 4;
 		board[0][0].value = 2;
@@ -84,21 +84,85 @@ public class Board
 	//Method called when the up arrow is pressed 
 	//Test the value inside each row tile of each column 1-4 one by one moving from row 1 to row4 and if the value is not 0, 
 	//then perform the vertical move.
-	public void up()
+	public void up() throws InterruptedException
 	{
 		for(int i=0; i<board.length; i++)	//Column 
 		{
 			border = 0; 
 			for(int j=0; j<board.length; j++)	//Row. Check all the rows starting from row1 to row4 moving down each column
 			{
+				System.out.print(board[i][j].getValue() + "\t");
 				if(board[j][i].getValue() != 0)
 				{
 					if(border <= j)
 					{
-						verticalMove(j,i,"up");
+						//verticalMove(j,i,"up");
 					}
 				}
 			}
+			System.out.println();
+		}
+		System.out.println("\n");
+		System.out.println("NOW WE TRY RECURSION");
+		up2(board, grids-1, 0, grids-1);
+	}
+	
+	public void up2(Tile[][] testArr, int row, int col, int compare) throws InterruptedException
+	{
+		
+		System.out.println("col == " +  col);
+		if(col >= 4)
+		{	
+			System.out.println("sTIME TO STOP");
+			return;
+		}
+		
+		else if(col<=3)
+		{
+			if(compare<0)
+			{			
+				row = testArr.length-1;
+				compare = row;
+				col+=1;
+				
+				if(col >=4)
+				{
+					return;
+				}
+				up2(testArr, row, col, compare);
+			}
+			
+				Tile initialTile = board[row][col];
+				Tile compareTile = board[compare][col];
+			
+			if(compare == row)
+			{
+				System.out.println("Row equal to compare to reduce by 1;");
+				compare--;
+				up2(testArr, row, col, compare);
+			}
+
+			else if(initialTile.value == 0 || compareTile.value == initialTile.value)
+			{
+				
+				if(compare < row)
+				{
+					System.out.println("Row after changing value " + row);
+					System.out.println("Compare = " + compare + "   Compare tile value = " + compareTile.value);
+					int score = initialTile.value + compareTile.value; 
+					initialTile.setValue(score);
+					compareTile.setValue(0);
+					Thread.sleep(100);
+					compare -=1;
+					up2(testArr, row, col, compare);
+				}
+				else 
+				{
+					compare-=1;
+					up2(testArr, row, col, compare);
+				}
+			}
+	
 		}
 	}
 	

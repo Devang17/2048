@@ -66,7 +66,7 @@ public class Game //extends JPanel implements KeyListener
 	}
 	
  */
-	public static void main(String[] args)
+	public static void main(String[] args) throws InterruptedException
 	{
 		System.out.println(board.toString());
 	
@@ -86,8 +86,9 @@ public class Game //extends JPanel implements KeyListener
 				{
 					case "w":
 						board.up();
-						board.spawn();
+						//board.spawn();
 						System.out.println(board.toString());
+						
 					break;
 					
 					case "a":
