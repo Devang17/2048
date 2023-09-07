@@ -31,6 +31,7 @@ public class Board
 		board[0][2].value = 2;
 		board[0][1].value = 4;
 		board[0][0].value = 2;
+		board[2][0].value = 2;
 		
 	}
 	
@@ -96,7 +97,7 @@ public class Board
 				{
 					if(border <= j)
 					{
-						//verticalMove(j,i,"up");
+						verticalMove(j,i,"up");
 					}
 				}
 			}
@@ -104,69 +105,107 @@ public class Board
 		}
 		System.out.println("\n");
 		System.out.println("NOW WE TRY RECURSION");
-		up2(board, grids-1, 0, grids-1);
+		
 	}
 	
-	public void up2(Tile[][] testArr, int row, int col, int compare) throws InterruptedException
+	public void down2()
+	{
+		int row = board.length;
+		int col = 0;
+		border = row;
+	}
+	
+	//Method called when the up arrow is pressed 
+	//Test the value inside each row tile of each column 1-4 one by one moving from row 4 to row 1and if the value is not 0, 
+	//then perform the vertical move.
+	public void down() throws InterruptedException
 	{
 		
-		System.out.println("col == " +  col);
-		if(col >= 4)
-		{	
-			System.out.println("sTIME TO STOP");
-			return;
+		for(int i=0; i<grids; i++)	//Column
+		{
+		 	border = grids - 1; 
+			for(int j=grids-1; j>=0; j--)	//Row. Check each row of column starting at row4 and moving towards row1
+			{
+				if(board[j][i].getValue()!=0)
+				{
+					if(border >= j)
+					{
+						//verticalMove(j,i, "down");
+					}
+				}
+			}
+		}
+	
+		long startTime = System.nanoTime(); 
+
+		long estimatedTime = System.nanoTime() - startTime;
+		System.out.println( "Time take by the function " + estimatedTime);
+		
+	}
+	
+	
+	/*
+	public void up2(Tile[][] testArr, int row, int col, int compare) throws InterruptedException
+	{
+//		if(col >= 4)
+//		{	
+//			System.out.println("sTIME TO STOP");
+//			System.out.println("row and compare = " + row + " AND " + compare);
+//			return;
+//		}
+//		
+//		else
+//		{
+		if(compare<0)
+		{		
+			row = testArr.length-1;
+			compare = row;
+			col+=1;	
+			if(col >=4)
+			{
+				return;
+			}
+			up2(testArr, row, col, compare);
 		}
 		
-		else if(col<=3)
+		Tile initialTile = board[row][col];
+		Tile compareTile = board[compare][col];
+		
+		if(compare == row)
 		{
-			if(compare<0)
-			{			
-				row = testArr.length-1;
-				compare = row;
-				col+=1;
-				
-				if(col >=4)
-				{
-					return;
-				}
-				up2(testArr, row, col, compare);
-			}
-			
-				Tile initialTile = board[row][col];
-				Tile compareTile = board[compare][col];
-			
-			if(compare == row)
-			{
-				System.out.println("Row equal to compare to reduce by 1;");
-				compare--;
-				up2(testArr, row, col, compare);
-			}
+			compare--;
+			up2(testArr, row, col, compare);
+		}
 
-			else if(initialTile.value == 0 || compareTile.value == initialTile.value)
+		else if(initialTile.value == 0 || compareTile.value == initialTile.value)
+		{		
+			if(compare < row)
 			{
-				
-				if(compare < row)
-				{
-					System.out.println("Row after changing value " + row);
-					System.out.println("Compare = " + compare + "   Compare tile value = " + compareTile.value);
-					int score = initialTile.value + compareTile.value; 
-					initialTile.setValue(score);
-					compareTile.setValue(0);
-					Thread.sleep(100);
-					compare -=1;
-					up2(testArr, row, col, compare);
-				}
-				else 
-				{
-					compare-=1;
-					up2(testArr, row, col, compare);
-				}
+				int score = initialTile.value + compareTile.value; 
+				initialTile.setValue(score);
+				compareTile.setValue(0);
+				Thread.sleep(100);
+				compare -=1;
+				up2(testArr, row, col, compare);
 			}
-	
+		}
+		
+		else 
+		{	
+			compare-=1;
+			up2(testArr, row, col, compare);
 		}
 	}
 	
-
+//	public int upORdown(String direction)
+//	{
+//		if(direction == "down")
+//			return grids-1;
+//		else 
+//			return 0;
+//	}
+	
+*/
 	//Performs vertical move i.e. adding and moving the tiles based upon their tile values
 	public void verticalMove(int row, int col, String direction)
 	{
@@ -202,32 +241,11 @@ public class Board
 	}
 	
 
-	//Method called when the up arrow is pressed 
-	//Test the value inside each row tile of each column 1-4 one by one moving from row 4 to row 1and if the value is not 0, 
-	//then perform the vertical move.
-	public void down()
-	{
-		for(int i=0; i<grids; i++)	//Column
-		{
-		 	border = grids - 1; 
-			for(int j=grids-1; j>=0; j--)	//Row. Check each row of column starting at row4 and moving towards row1
-			{
-				if(board[j][i].getValue()!=0)
-				{
-					if(border >= j)
-					{
-						verticalMove(j,i, "down");
-					}
-				}
-			}
-		}
-	}
-	
+
 
 	
 	public void left()
 	{
-		
 		for(int i=0; i<grids-1; i++)
 		{
 			border = 0;

@@ -86,7 +86,7 @@ public class Game //extends JPanel implements KeyListener
 				{
 					case "w":
 						board.up();
-						//board.spawn();
+						board.spawn();
 						System.out.println(board.toString());
 						
 					break;
