@@ -108,17 +108,18 @@ public class Board
 		
 	}
 	
-	public void down2()
+	public void down2() 
 	{
 		int row = board.length;
 		int col = 0;
 		border = row;
+		traverseDown(board, row, col);
 	}
 	
 	//Method called when the up arrow is pressed 
 	//Test the value inside each row tile of each column 1-4 one by one moving from row 4 to row 1and if the value is not 0, 
 	//then perform the vertical move.
-	public void down() throws InterruptedException
+	public void down() 
 	{
 		
 		for(int i=0; i<grids; i++)	//Column
@@ -137,6 +138,7 @@ public class Board
 		}
 	
 		long startTime = System.nanoTime(); 
+		traverseDown(board, 3, 0);
 
 		long estimatedTime = System.nanoTime() - startTime;
 		System.out.println( "Time take by the function " + estimatedTime);
@@ -144,6 +146,39 @@ public class Board
 	}
 	
 	
+	public void traverseDown(Tile[][] arr, int row, int col)
+	{
+		
+		if(row < 0 || border <0)
+		{
+			col++; 
+			row = 2; 
+			border = 3;
+		}
+		
+		if(col>=4)
+		{
+			return;
+		}
+		
+		if(board[row][col].getValue() != 0)
+		{
+			
+			if(border >= row)
+			{
+				verticalMove(row, col,"down");
+				row-=1;
+				traverseDown(arr, row, col);
+			}
+		}
+		
+		else
+		{
+			row--;
+			traverseDown(arr, row, col);
+		}
+		
+	}
 	/*
 	public void up2(Tile[][] testArr, int row, int col, int compare) throws InterruptedException
 	{
