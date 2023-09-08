@@ -9,7 +9,7 @@ public class Board
 	int grids = 4; 
 	int border = 0; 
 	public int score = 0; 
-	
+	boolean flag = true;
 	//Constructor to set up a 4X4 board  
 	public Board()
 	{
@@ -62,8 +62,8 @@ public class Board
 		Random rand = new Random();
 		while(flag)
 		{
-			int col = rand.nextInt(3);
-			int row = rand.nextInt(3);
+			int col = rand.nextInt(4);
+			int row = rand.nextInt(4);
 			
 			System.out.println("don2");
 			
@@ -87,30 +87,46 @@ public class Board
 	//then perform the vertical move.
 	public void up() throws InterruptedException
 	{
-		for(int i=0; i<board.length; i++)	//Column 
-		{
-			border = 0; 
-			for(int j=0; j<board.length; j++)	//Row. Check all the rows starting from row1 to row4 moving down each column
-			{
-				System.out.print(board[i][j].getValue() + "\t");
-				if(board[j][i].getValue() != 0)
-				{
-					if(border <= j)
-					{
-						verticalMove(j,i,"up");
-					}
-				}
-			}
-			System.out.println();
-		}
-		System.out.println("\n");
-		System.out.println("NOW WE TRY RECURSION");
-		
+//		for(int i=0; i<board.length; i++)	//Column 
+//		{
+//			border = 0; 
+//			for(int j=0; j<board.length; j++)	//Row. Check all the rows starting from row1 to row4 moving down each column
+//			{
+//				System.out.print(board[i][j].getValue() + "\t");
+//				if(board[j][i].getValue() != 0)
+//				{
+//					if(border <= j)
+//					{
+//						//verticalMove(j,i,"up");
+//					}
+//				}
+//			}
+//			System.out.println();
+//		}
+		System.out.println("happened?");
+		flag = true;
+		up2(board, 0, 0, 0, "up");
 	}
+	
+	public void up2()
+	{
+		int row = 0; 
+		int col = 0; 
+		border = row;
+		traverseUp(board, row, col);
+	}
+	
+	public void traverseUp(Tile[][] arr, int row, int col)
+
+	{
+		if(row < 0 || row >3)
+			return;
+	}
+	
 	
 	public void down2() 
 	{
-		int row = board.length;
+		int row = 3;
 		int col = 0;
 		border = row;
 		traverseDown(board, row, col);
@@ -136,10 +152,10 @@ public class Board
 				}
 			}
 		}
-	
+		flag = true;
 		long startTime = System.nanoTime(); 
-		traverseDown(board, 3, 0);
-
+		//traverseDown(board, 3, 0);
+		up2(board, 3, 0, 3, "down");
 		long estimatedTime = System.nanoTime() - startTime;
 		System.out.println( "Time take by the function " + estimatedTime);
 		
@@ -179,8 +195,8 @@ public class Board
 		}
 		
 	}
-	/*
-	public void up2(Tile[][] testArr, int row, int col, int compare) throws InterruptedException
+	
+	public void up2(Tile[][] testArr, int row, int col, int compare, String direction)
 	{
 //		if(col >= 4)
 //		{	
@@ -191,16 +207,26 @@ public class Board
 //		
 //		else
 //		{
-		if(compare<0)
+		
+		if(!flag)
+		{
+			return;
+		}
+		if(direction == "down" && compare<0 || direction == "up" && compare>3 )
 		{		
-			row = testArr.length-1;
+			if(direction == "down")
+				row = grids-1;
+			else
+				row = 0;
 			compare = row;
 			col+=1;	
+			System.out.println("NEW COLUMN = " + col);
 			if(col >=4)
 			{
+				flag = false;
 				return;
 			}
-			up2(testArr, row, col, compare);
+			up2(testArr, row, col, compare, direction);
 		}
 		
 		Tile initialTile = board[row][col];
@@ -208,39 +234,47 @@ public class Board
 		
 		if(compare == row)
 		{
-			compare--;
-			up2(testArr, row, col, compare);
+			System.out.println("function1");
+			compare += upORdown(direction);
+			up2(testArr, row, col, compare, direction);
 		}
 
 		else if(initialTile.value == 0 || compareTile.value == initialTile.value)
 		{		
-			if(compare < row)
-			{
+				System.out.println("function2");
 				int score = initialTile.value + compareTile.value; 
 				initialTile.setValue(score);
 				compareTile.setValue(0);
-				Thread.sleep(100);
-				compare -=1;
-				up2(testArr, row, col, compare);
-			}
+				compare += upORdown(direction);
+				up2(testArr, row, col, compare, direction);
+			
 		}
 		
 		else 
 		{	
-			compare-=1;
-			up2(testArr, row, col, compare);
+			System.out.println("function3");
+			if(compareTile.value!=0)
+				{if(direction == "down")
+					row-=1;
+				else
+					row+=1;
+				}
+			else
+				compare += upORdown(direction);
+			System.out.println("Row and Compare in  function 3 = " + row + compare);
+			up2(testArr, row, col, compare, direction);
 		}
 	}
 	
-//	public int upORdown(String direction)
-//	{
-//		if(direction == "down")
-//			return grids-1;
-//		else 
-//			return 0;
-//	}
+	public int upORdown(String direction)
+	{
+		if(direction == "down")
+			return -1;
+		else 
+			return +1;
+	}
 	
-*/
+
 	//Performs vertical move i.e. adding and moving the tiles based upon their tile values
 	public void verticalMove(int row, int col, String direction)
 	{

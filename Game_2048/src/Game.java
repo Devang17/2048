@@ -10,6 +10,7 @@ public class Game //extends JPanel implements KeyListener
 
 	
 	static Board board = new Board();	//Set up a new Board object
+	static Tile tile = new Tile();
 	static Game game = new Game(); //Create w new Game object to setup a keyListener
 	//static JFrame frame = new JFrame("KeyEvent Example");
 	
