@@ -27,11 +27,11 @@ public class Board
 		int x = rand.nextInt(4);
 		int y = rand.nextInt(4);
 		
-		board[0][3].value = 8;
-		board[0][2].value = 2;
-		board[0][1].value = 4;
-		board[0][0].value = 2;
-		board[2][0].value = 2;
+		board[3][0].value = 8;
+		board[3][1].value = 2;
+		board[3][2].value = 4;
+		board[3][3].value = 2;
+
 		
 	}
 	
@@ -103,34 +103,36 @@ public class Board
 //			}
 //			System.out.println();
 //		}
-		System.out.println("happened?");
 		flag = true;
+		long startTime = System.nanoTime(); 
 		up2(board, 0, 0, 0, "up");
+		long estimatedTime = System.nanoTime() - startTime;
+		System.out.println( "Time take by the function " + estimatedTime);
 	}
-	
-	public void up2()
-	{
-		int row = 0; 
-		int col = 0; 
-		border = row;
-		traverseUp(board, row, col);
-	}
-	
-	public void traverseUp(Tile[][] arr, int row, int col)
-
-	{
-		if(row < 0 || row >3)
-			return;
-	}
-	
-	
-	public void down2() 
-	{
-		int row = 3;
-		int col = 0;
-		border = row;
-		traverseDown(board, row, col);
-	}
+//	
+//	public void up2()
+//	{
+//		int row = 0; 
+//		int col = 0; 
+//		border = row;
+//		traverseUp(board, row, col);
+//	}
+//	
+//	public void traverseUp(Tile[][] arr, int row, int col)
+//
+//	{
+//		if(row < 0 || row >3)
+//			return;
+//	}
+//	
+//	
+//	public void down2() 
+//	{
+//		int row = 3;
+//		int col = 0;
+//		border = row;
+//		traverseDown(board, row, col);
+//	}
 	
 	//Method called when the up arrow is pressed 
 	//Test the value inside each row tile of each column 1-4 one by one moving from row 4 to row 1and if the value is not 0, 
@@ -138,20 +140,20 @@ public class Board
 	public void down() 
 	{
 		
-		for(int i=0; i<grids; i++)	//Column
-		{
-		 	border = grids - 1; 
-			for(int j=grids-1; j>=0; j--)	//Row. Check each row of column starting at row4 and moving towards row1
-			{
-				if(board[j][i].getValue()!=0)
-				{
-					if(border >= j)
-					{
-						//verticalMove(j,i, "down");
-					}
-				}
-			}
-		}
+//		for(int i=0; i<grids; i++)	//Column
+//		{
+//		 	border = grids - 1; 
+//			for(int j=grids-1; j>=0; j--)	//Row. Check each row of column starting at row4 and moving towards row1
+//			{
+//				if(board[j][i].getValue()!=0)
+//				{
+//					if(border >= j)
+//					{
+//						//verticalMove(j,i, "down");
+//					}
+//				}
+//			}
+//		}
 		flag = true;
 		long startTime = System.nanoTime(); 
 		//traverseDown(board, 3, 0);
@@ -161,66 +163,55 @@ public class Board
 		
 	}
 	
-	
-	public void traverseDown(Tile[][] arr, int row, int col)
-	{
-		
-		if(row < 0 || border <0)
-		{
-			col++; 
-			row = 2; 
-			border = 3;
-		}
-		
-		if(col>=4)
-		{
-			return;
-		}
-		
-		if(board[row][col].getValue() != 0)
-		{
-			
-			if(border >= row)
-			{
-				verticalMove(row, col,"down");
-				row-=1;
-				traverseDown(arr, row, col);
-			}
-		}
-		
-		else
-		{
-			row--;
-			traverseDown(arr, row, col);
-		}
-		
-	}
-	
-	public void up2(Tile[][] testArr, int row, int col, int compare, String direction)
-	{
-//		if(col >= 4)
-//		{	
-//			System.out.println("sTIME TO STOP");
-//			System.out.println("row and compare = " + row + " AND " + compare);
+//	
+//	public void traverseDown(Tile[][] arr, int row, int col)
+//	{
+//		
+//		if(row < 0 || border <0)
+//		{
+//			col++; 
+//			row = 2; 
+//			border = 3;
+//		}
+//		
+//		if(col>=4)
+//		{
 //			return;
+//		}
+//		
+//		if(board[row][col].getValue() != 0)
+//		{
+//			
+//			if(border >= row)
+//			{
+//				verticalMove(row, col,"down");
+//				row-=1;
+//				traverseDown(arr, row, col);
+//			}
 //		}
 //		
 //		else
 //		{
-		
+//			row--;
+//			traverseDown(arr, row, col);
+//		}
+//		
+//	}
+//	
+	public void up2(Tile[][] testArr, int row, int col, int compare, String direction)
+	{	
 		if(!flag)
 		{
 			return;
 		}
 		if(direction == "down" && compare<0 || direction == "up" && compare>3 )
-		{		
+		{	
 			if(direction == "down")
 				row = grids-1;
 			else
 				row = 0;
 			compare = row;
 			col+=1;	
-			System.out.println("NEW COLUMN = " + col);
 			if(col >=4)
 			{
 				flag = false;
@@ -231,37 +222,36 @@ public class Board
 		
 		Tile initialTile = board[row][col];
 		Tile compareTile = board[compare][col];
-		
+	
 		if(compare == row)
 		{
-			System.out.println("function1");
 			compare += upORdown(direction);
 			up2(testArr, row, col, compare, direction);
 		}
+		
 
-		else if(initialTile.value == 0 || compareTile.value == initialTile.value)
+
+		else if(initialTile.value == 0 && compareTile.value!=0 || compareTile.value == initialTile.value  && initialTile.value !=0 && board[compare][col]!=board[row][col])
 		{		
-				System.out.println("function2");
-				int score = initialTile.value + compareTile.value; 
-				initialTile.setValue(score);
-				compareTile.setValue(0);
-				compare += upORdown(direction);
-				up2(testArr, row, col, compare, direction);
+			int score = initialTile.value + compareTile.value; 
+			initialTile.setValue(score);
+			compareTile.setValue(0);
+			compare += upORdown(direction);
+			up2(testArr, row, col, compare, direction);
 			
 		}
 		
 		else 
 		{	
-			System.out.println("function3");
 			if(compareTile.value!=0)
-				{if(direction == "down")
+			{
+				if(direction == "down")
 					row-=1;
 				else
 					row+=1;
-				}
+			}
 			else
 				compare += upORdown(direction);
-			System.out.println("Row and Compare in  function 3 = " + row + compare);
 			up2(testArr, row, col, compare, direction);
 		}
 	}
@@ -274,6 +264,75 @@ public class Board
 			return +1;
 	}
 	
+	public void left2(Tile[][] testArr, int row, int col, int compare, String direction)
+	{
+		
+		if(!flag)
+		{
+			return;
+		}
+		
+		
+		if(direction == "right" && compare<0 || direction == "left" && compare>3 )
+		{		
+			if(direction == "right")
+				col = grids-1;
+			else
+				col = 0;
+			compare = col;
+			row+=1;	
+			if(row >=4)
+			{
+				flag = false;
+				return;
+			}
+			left2(testArr, row, col, compare, direction);
+		}
+		
+		Tile initialTile = board[row][col];
+		Tile compareTile = board[row][compare];
+		
+		if(compare == col)
+		{
+			
+			compare += leftOrRight(direction);
+			left2(testArr, row, col, compare, direction);
+		}
+		
+		else if(initialTile.value == 0 && compareTile.value!=0 || compareTile.value == initialTile.value && initialTile.value !=0)
+		{		
+			int score = initialTile.value + compareTile.value; 
+			initialTile.setValue(score);
+			compareTile.setValue(0);
+			compare += leftOrRight(direction);
+			left2(testArr, row, col, compare, direction);
+			
+		}
+		
+		else 
+		{	
+			if(compareTile.value!=0)
+			{
+				if(direction == "right")
+					col-=1;
+				else
+					col+=1;
+			}
+			else
+				compare += leftOrRight(direction);
+			left2(testArr, row, col, compare, direction);
+		}
+		
+	}
+	
+	
+	public int leftOrRight(String direction)
+	{
+		if(direction == "right")
+			return -1;
+		else 
+			return +1;
+	}
 
 	//Performs vertical move i.e. adding and moving the tiles based upon their tile values
 	public void verticalMove(int row, int col, String direction)
@@ -315,42 +374,46 @@ public class Board
 	
 	public void left()
 	{
-		for(int i=0; i<grids-1; i++)
-		{
-			border = 0;
-			for(int j=0; j<=grids-1; j++)
-			{
-				if(board[i][j].getValue()!=0)
-				{
-					if(border <= j)
-					{
-						System.out.println("column = " + j);
-						horizontalMove(i, j, "left");
-					}
-				}
-			}
-		}
+//		for(int i=0; i<grids-1; i++)
+//		{
+//			border = 0;
+//			for(int j=0; j<=grids-1; j++)
+//			{
+//				if(board[i][j].getValue()!=0)
+//				{
+//					if(border <= j)
+//					{
+//						System.out.println("column = " + j);
+//						//horizontalMove(i, j, "left");
+//					}
+//				}
+//			}
+//		}
+		flag = true;
+		left2(board, 0, 0, 0, "left");
 	}
 	
 	
 	//Method to execute when the user presses right key
 	public void right()
 	{
-		for(int i=0; i<grids; i++)	//Row
-		{
-			border = 3;
-			for(int j=grids-1; j>=0; j--)  //Column
-			{
-				
-				if(board[i][j].getValue()!=0)
-				{	
-					if(border >= i)
-					{				
-						horizontalMove(i, j, "right");
-					}
-				}
-			}
-		}
+//		for(int i=0; i<grids; i++)	//Row
+//		{
+//			border = 3;
+//			for(int j=grids-1; j>=0; j--)  //Column
+//			{
+//				
+//				if(board[i][j].getValue()!=0)
+//				{	
+//					if(border >= i)
+//					{				
+//						//horizontalMove(i, j, "right");
+//					}
+//				}
+//			}
+//		}
+		flag = true;
+		left2(board, 0, 3, 3, "right");
 	}
 	
 	public void horizontalMove(int row, int col, String direction)
