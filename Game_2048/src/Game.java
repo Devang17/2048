@@ -87,26 +87,26 @@ public class Game //extends JPanel implements KeyListener
 				{
 					case "w":
 						board.up();
-						board.spawn();
+						flag = board.spawn();
 						System.out.println(board.toString());
 						
 					break;
 					
 					case "a":
 						board.left();
-						board.spawn();
+						flag = board.spawn();
 						System.out.println(board.toString());
 					break;
 						
 					case "s":
 						board.down();
-						board.spawn();
+						flag = board.spawn();
 						System.out.println(board.toString());
 					break;
 						
 					case "d":
 						board.right();
-						board.spawn();
+						flag = board.spawn();
 						System.out.println(board.toString());
 					break;
 					
@@ -115,6 +115,8 @@ public class Game //extends JPanel implements KeyListener
 				}
 			}
 		}
+		
+		System.out.println("GAME OVER");
         
 
         

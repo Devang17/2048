@@ -56,31 +56,78 @@ public class Board
 
 	
 	//Find an empty tile and spawn either a 2 or a 4 in the tile
-	public void spawn()
+	public boolean spawn()
 	{
-		boolean flag = true;
-		Random rand = new Random();
-		while(flag)
-		{
-			int col = rand.nextInt(4);
-			int row = rand.nextInt(4);
-			
-			System.out.println("don2");
-			
-			if(board[row][col].value == 0)
-			{
-				double randomNum = Math.random();
-				
-				int spawnNum = (randomNum > 0.5) ? 2:4;
-				
-				board[row][col].setValue(spawnNum);
-				flag = false;
-			}
-			
-		}
+//		boolean flag = true;
+//		Random rand = new Random();
+//		while(flag)
+//		{
+//			
+//			
+//			System.out.println("don2");
+//			
+//			if(board[row][col].value == 0)
+//			{
+//				double randomNum = Math.random();
+//				
+//				int spawnNum = (randomNum > 0.5) ? 2:4;
+//				
+//				board[row][col].setValue(spawnNum);
+//				flag = false;
+//			}
+//			
+//		}
+		return findEmptyIndex(board);
 		
 	}
 	
+	// public void findEmptyIndex(Tile[][] array) {
+//	        int numRows = array.length;
+//	        int numCols = array[0].length;
+//	        
+//	        Random rand = new Random();
+//	        
+//	        double randomNum = Math.random();
+//			
+//			int spawnNum = (randomNum > 0.5) ? 2:4;
+//	        
+//	        for (int i = 0; i < numRows * numCols; i++) {
+//	        	int col = rand.nextInt(4);
+//				int row = rand.nextInt(4);
+//
+//	            if (array[row][col].value == 0) { // Assuming 0 represents an empty index
+////	                return new int[]{row, col};
+//	            	board[row][col].setValue(spawnNum);
+//	            	return;
+//	            }
+//	        }
+//	        // If no empty index is found, return null or a special value as needed.     	
+//	    }
+	
+	 public boolean findEmptyIndex(Tile[][] array) {
+	        int numRows = array.length;
+	        int numCols = array[0].length;
+	        
+	        Random rand = new Random();
+	        
+	        double randomNum = Math.random();
+			
+			int spawnNum = (randomNum > 0.5) ? 2:4;
+	        
+	        for (int i = 0; i < numRows * numCols; i++) {
+	        	int col = rand.nextInt(4);
+				int row = rand.nextInt(4);
+
+	            if (array[row][col].value == 0) { // Assuming 0 represents an empty index
+//	                return new int[]{row, col};
+	            	board[row][col].setValue(spawnNum);
+	            	return true;
+	            }
+	        }
+	        
+	        return false;
+	        // If no empty index is found, return null or a special value as needed.     	
+	    }
 
 	//Method called when the up arrow is pressed 
 	//Test the value inside each row tile of each column 1-4 one by one moving from row 1 to row4 and if the value is not 0, 
